@@ -1,14 +1,14 @@
-title: Frame Studio
-emoji: 🎨
-colorFrom: indigo
-colorTo: purple
-sdk: static
-pinned: false
-Frame Studio 🎨
-Craft your perfect checkerboard frame. This app was built to generate custom frames with variable checker sizes, colors, and transparency.
-Features:
- * Live Preview: See your changes in real-time.
- * Custom Colors: Pick any two colors or make them transparent.
- * Randomize: Get inspired with a random design.
- * Flexible Export: Generate and save frames at multiple preset or custom dimensions.
-Built with HTML, Tailwind CSS, and JavaScript.
+from flask import Flask, send_from_directory
+
+# Create a Flask web server
+app = Flask(__name__, static_folder='.', static_url_path='')
+
+# Define the route for the root URL ('/')
+@app.route('/')
+def index():
+    # Send the index.html file from the current directory
+    return send_from_directory('.', 'index.html')
+
+# This allows the app to be run by a production server
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=7860)
