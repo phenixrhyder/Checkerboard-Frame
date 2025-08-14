@@ -16,5 +16,6 @@ COPY . /code/
 # Make port 7860 available to the world outside this container
 EXPOSE 7860
 
-# Run app.py when the container launches
-CMD ["gunicorn", "--bind", "0.0.0.0:7860", "app:app"]
+# --- THIS IS THE CORRECTED LINE ---
+# Run app.py when the container launches using the full path to gunicorn
+CMD ["/usr/local/bin/gunicorn", "--bind", "0.0.0.0:7860", "app:app"]
