@@ -2,7 +2,7 @@
 title: Frame Studio
 emoji: 🎨
 colorFrom: pink
-colorTo: orange
+colorTo: pink
 sdk: gradio
 app_file: app.py
 ---
