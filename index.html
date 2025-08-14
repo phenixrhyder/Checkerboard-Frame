@@ -240,7 +240,6 @@
                 const boardSize = dom.canvas.parentElement.clientWidth;
                 dom.canvas.width = boardSize;
                 dom.canvas.height = boardSize;
-                // BUG FIX: Removed arbitrary scaling. Checker size is now 1-to-1 with the slider value.
                 const liveConfig = { ...state };
                 drawPattern(ctx, boardSize, boardSize, liveConfig);
             };
@@ -267,6 +266,7 @@
                 const { id, value, type, checked } = e.target;
                 state[id] = type === 'checkbox' ? checked : value;
                 if(type === 'range') state[id] = parseInt(value, 10);
+                // BUG FIX: Directly update the UI and redraw on every single input change.
                 updateUI();
             };
 
@@ -293,20 +293,30 @@
                     const [w, h] = cb.value.split('x').map(Number);
                     sizesToGenerate.push({ w, h });
                 });
-                const customW = parseInt(dom.modal.customWidth.value, 10);
-                const customH = parseInt(dom.modal.customHeight.value, 10);
+                
+                // BUG FIX: Added robust parsing for custom sizes to prevent crashes.
+                const customW = parseInt(dom.modal.customWidth.value, 10) || 0;
+                const customH = parseInt(dom.modal.customHeight.value, 10) || 0;
                 if (customW > 0 && customH > 0) {
                     sizesToGenerate.push({ w: customW, h: customH });
                 }
 
-                if (sizesToGenerate.length === 0) { return; }
+                if (sizesToGenerate.length === 0) { 
+                    // Add a visual cue that nothing was selected
+                    dom.modal.generateBtn.textContent = "Select a size!";
+                    dom.modal.generateBtn.classList.add('bg-red-500');
+                    setTimeout(() => {
+                        dom.modal.generateBtn.textContent = "Generate";
+                        dom.modal.generateBtn.classList.remove('bg-red-500');
+                    }, 2000);
+                    return;
+                }
 
                 dom.modal.imagesContainer.innerHTML = '';
                 sizesToGenerate.forEach(size => {
                     const offscreenCanvas = document.createElement('canvas');
                     offscreenCanvas.width = size.w;
                     offscreenCanvas.height = size.h;
-                    // For export, we use the state directly without scaling the checker size
                     drawPattern(offscreenCanvas.getContext('2d'), size.w, size.h, state);
                     
                     const imageCard = document.createElement('div');
