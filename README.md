@@ -3,9 +3,7 @@ title: Frame Studio
 emoji: 🎨
 colorFrom: indigo
 colorTo: purple
-sdk: gradio
-sdk_version: 4.31.0
-app_file: app.py
+sdk: static
 pinned: false
 ---
 Frame Studio 🎨
