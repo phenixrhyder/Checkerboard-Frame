@@ -1,14 +1,14 @@
+# app.py
 from flask import Flask, send_from_directory
 
-# Create a Flask web server
-app = Flask(__name__, static_folder='.', static_url_path='')
+# This creates the web server.
+app = Flask(__name__)
 
-# Define the route for the root URL ('/')
+# This tells the server to look for your main HTML file.
 @app.route('/')
-def index():
-    # Send the index.html file from the current directory
+def home():
     return send_from_directory('.', 'index.html')
 
-# This allows the app to be run by a production server
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=7860)
+# This runs the server.
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=7860)
