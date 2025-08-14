@@ -1,21 +1,20 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim
+# Use the standard Python 3.9 image
+FROM python:3.9
 
-# Set the working directory in the container
-WORKDIR /code
+# Set the working directory inside the container
+WORKDIR /app
 
-# Copy the requirements file into the container at /code
-COPY ./requirements.txt /code/requirements.txt
+# Copy the requirements file into the working directory
+COPY requirements.txt .
 
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+# Install the Python libraries specified in the requirements file
+RUN pip install -r requirements.txt
 
-# Copy the rest of the application's code into the container
-COPY . /code/
+# Copy all your other files (app.py, index.html) into the working directory
+COPY . .
 
-# Make port 7860 available to the world outside this container
+# Tell the container to listen on port 7860
 EXPOSE 7860
 
-# --- THE FINAL FIX ---
-# Run gunicorn as a Python module to avoid PATH issues
-CMD ["python", "-m", "gunicorn", "--bind", "0.0.0.0:7860", "app:app"]
+# The command to run your application using gunicorn
+CMD ["python", "-m", "gunicorn", "app:app", "--bind", "0.0.0.0:7860"]
