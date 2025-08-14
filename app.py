@@ -1,11 +1,15 @@
-# app.py
-from flask import Flask, send_from_directory
+import gradio as gr
 
-app = Flask(__name__)
+# Read the entire content of the index.html file
+with open('index.html', 'r', encoding='utf-8') as f:
+    html_content = f.read()
 
-@app.route('/')
-def home():
-    return send_from_directory('.', 'index.html')
+# Create a Gradio Blocks interface
+with gr.Blocks(title="Frame Studio") as demo:
+    # Use gr.HTML() to render your full HTML file.
+    # The content will be displayed inside a full-width, full-height iframe.
+    gr.HTML(html_content)
 
+# Launch the app
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=7860)
+    demo.launch()
